@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Thakkar Travels Admin</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f4f4f4;
+text-align:center;
+}
+
+header{
+background:#000;
+color:white;
+padding:15px;
+font-size:22px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:20px auto;
+width:300px;
+border-radius:8px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px 20px;
+background:#ff9900;
+border:none;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+Thakkar Travels Admin Panel
+</header>
+
+<div class="card">
+
+<h3>Bookings</h3>
+
+<button onclick="loadBookings()">View Bookings</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+async function loadBookings(){
+
+const res = await fetch("https://thakkar-travels-portal.onrender.com/api/bookings/all")
+
+const data = await res.json()
+
+document.getElementById("result").innerHTML =
+"<pre>"+JSON.stringify(data,null,2)+"</pre>"
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Flight Booking - Thakkar Travels</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:20px;
+}
+
+h1{
+text-align:center;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+button{
+padding:8px 15px;
+background:#ff6600;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Available Flights</h1>
+
+<button onclick="loadFlights()">Load Flights</button>
+
+<br><br>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Airline</th>
+<th>From</th>
+<th>To</th>
+<th>Price</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="flightTable">
+
+</tbody>
+
+</table>
+
+<script>
+
+const API = "https://thakkar-travels-portal.onrender.com"
+
+async function loadFlights(){
+
+try{
+
+const res = await fetch(API + "/api/flights/search")
+
+const flights = await res.json()
+
+let html = ""
+
+flights.forEach(f => {
+
+html += `
+<tr>
+<td>${f.airline}</td>
+<td>${f.from}</td>
+<td>${f.to}</td>
+<td>₹${f.price}</td>
+<td><button onclick="bookFlight('${f.airline}')">Book</button></td>
+</tr>
+`
+
+})
+
+document.getElementById("flightTable").innerHTML = html
+
+}catch(err){
+
+console.log(err)
+
+}
+
+}
+
+function bookFlight(airline){
+
+alert("Booking started for " + airline)
+
+}
+
+</script>
+
+</body>
+</html>

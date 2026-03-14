@@ -1,25 +1,23 @@
 const express=require("express")
-const router=express.Router()
+const fs=require("fs")
 
-let bookings=[]
+const router=express.Router()
 
 router.post("/create",(req,res)=>{
 
 const booking=req.body
 
-bookings.push(booking)
+let data=[]
 
-res.json({
-status:"success",
-message:"Booking created",
-booking
-})
+if(fs.existsSync("./data/bookings.json")){
+data=JSON.parse(fs.readFileSync("./data/bookings.json"))
+}
 
-})
+data.push(booking)
 
-router.get("/all",(req,res)=>{
+fs.writeFileSync("./data/bookings.json",JSON.stringify(data,null,2))
 
-res.json(bookings)
+res.json({status:"booking saved"})
 
 })
 

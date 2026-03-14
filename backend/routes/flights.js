@@ -1,7 +1,7 @@
 const express=require("express")
 const router=express.Router()
 
-router.post("/search",(req,res)=>{
+router.get("/search",(req,res)=>{
 
 const {from,to,date}=req.body
 

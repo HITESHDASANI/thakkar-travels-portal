@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Admin Dashboard</title>
+</head>
+
+<body>
+
+<h1>Thakkar Travels Admin</h1>
+
+<button onclick="loadBookings()">Load Bookings</button>
+
+<ul id="bookingList"></ul>
+
+<script>
+
+async function loadBookings(){
+
+const res=await fetch("http://localhost:3000/api/bookings")
+
+const data=await res.json()
+
+let html=""
+
+data.forEach(b=>{
+
+html+=`<li>${b.name} - ${b.flight}</li>`
+
+})
+
+document.getElementById("bookingList").innerHTML=html
+
+}
+
+</script>
+
+</body>
+</html>

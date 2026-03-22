@@ -1,57 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Flight Booking</title>
+<title>Book Flight</title>
 </head>
 
 <body>
 
-<h2>Available Flights</h2>
+<h2>Passenger Details</h2>
 
-<table border="1">
+<input id="name" placeholder="Full Name"><br><br>
+<input id="email" placeholder="Email"><br><br>
 
-<thead>
-<tr>
-<th>Airline</th>
-<th>From</th>
-<th>To</th>
-<th>Price</th>
-</tr>
-</thead>
-
-<tbody id="flights"></tbody>
-
-</table>
+<button onclick="confirmBooking()">Confirm Booking</button>
+<button onclick="payNow()">Pay & Book</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
+async function payNow() {
 
-async function loadFlights(){
+  const amount = 5000
 
-const res=await fetch("http://localhost:3000/api/flights/search")
+  const res = await fetch("http://localhost:3000/api/payment/create-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount })
+  })
 
-const data=await res.json()
+  const order = await res.json()
 
-let html=""
+  const options = {
+    key: "YOUR_KEY_ID",
+    amount: order.amount,
+    currency: "INR",
+    name: "Thakkar Travels",
+    order_id: order.id,
 
-data.forEach(f=>{
+    handler: async function () {
 
-html+=`
-<tr>
-<td>${f.airline}</td>
-<td>${f.from}</td>
-<td>${f.to}</td>
-<td>${f.price}</td>
-</tr>
-`
+      const flight = JSON.parse(localStorage.getItem("selectedFlight"))
 
-})
+      const bookingRes = await fetch("http://localhost:3000/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          flight
+        })
+      })
 
-document.getElementById("flights").innerHTML=html
+      const data = await bookingRes.json()
+
+      alert("Booking Confirmed ✅ PNR: " + data.pnr)
+
+      window.location.href = `ticket.html?id=${data._id}`
+    }
+  }
+
+  const rzp = new Razorpay(options)
+  rzp.open()
+}
+</script>
+
+<script src="./js/config.js"></script>
+
+<script>
+async function confirmBooking() {
+
+  const flight = JSON.parse(localStorage.getItem("selectedFlight"))
+
+  const res = await fetch(`${API}/api/bookings`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      flight
+    })
+  })
+
+  const data = await res.json()
+
+  alert("Booking Confirmed! PNR: " + data.pnr)
 
 }
-
-loadFlights()
-
 </script>
 
 </body>

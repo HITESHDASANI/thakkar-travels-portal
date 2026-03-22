@@ -1,39 +1,50 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 <title>Admin Dashboard</title>
+<style>
+body{font-family:Arial;background:#f4f4f4}
+.card{
+background:white;
+padding:20px;
+margin:10px;
+display:inline-block;
+width:200px;
+box-shadow:0 0 5px gray;
+}
+</style>
 </head>
 
 <body>
+    <h2>Admin Dashboard</h2>
 
-<h1>Thakkar Travels Admin</h1>
+Total Bookings
 
-<button onclick="loadBookings()">Load Bookings</button>
+<div id="bookings"></div>
 
-<ul id="bookingList"></ul>
+<h2>Thakkar Travels Admin</h2>
 
-<script>
+<div class="card">
+<h3>Total Bookings</h3>
+<p id="bookings">0</p>
+</div>
 
-async function loadBookings(){
+<div class="card">
+<h3>Total Payments</h3>
+<p id="payments">0</p>
+</div>
 
-const res=await fetch("http://localhost:3000/api/bookings")
+<div class="card">
+<h3>Flights Available</h3>
+<p id="flights">0</p>
 
-const data=await res.json()
+</div>
+<div class="card">
+<h3>Total Bookings</h3>
+<p id="totalBookings"></p>
+</div>
 
-let html=""
-
-data.forEach(b=>{
-
-html+=`<li>${b.name} - ${b.flight}</li>`
-
-})
-
-document.getElementById("bookingList").innerHTML=html
-
-}
-
-</script>
+<script src="js/admin.js"></script>
 
 </body>
 </html>

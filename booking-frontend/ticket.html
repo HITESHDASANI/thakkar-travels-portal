@@ -1,0 +1,15 @@
+<h2>Booking Confirmed</h2>
+
+<div id="ticket"></div>
+
+<script src="js/ticket.js"></script>
+<h2>Your Ticket</h2>
+
+<a id="download">Download PDF</a>
+
+<script>
+const id = new URLSearchParams(window.location.search).get("id")
+
+document.getElementById("download").href =
+  "http://localhost:3000/api/bookings/" + id + "/ticket"
+</script>

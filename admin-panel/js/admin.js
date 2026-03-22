@@ -1,9 +1,10 @@
-async function loadBookings(){
+async function loadDashboard(){
 
-const res=await fetch("https://api.thakkartravels.com/api/bookings/all")
+const flights = await fetch("https://thakkar-travels-portal.onrender.com/api/flights/search")
+const flightData = await flights.json()
 
-const data=await res.json()
-
-document.getElementById("list").innerHTML=JSON.stringify(data)
+document.getElementById("flights").innerText = flightData.length
 
 }
+
+loadDashboard()

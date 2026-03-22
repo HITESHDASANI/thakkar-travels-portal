@@ -1,3 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin - Bookings</title>
+</head>
+
+<body>
+
 <h2>All Bookings</h2>
 
+<button onclick="loadBookings()">Load</button>
+
 <div id="list"></div>
+
+<script>
+async function loadBookings() {
+
+  const res = await fetch("http://localhost:3000/api/bookings")
+  const data = await res.json()
+
+  const container = document.getElementById("list")
+
+  data.forEach(b => {
+    container.innerHTML += `
+      <div style="border:1px solid #ccc; margin:10px; padding:10px">
+        <h3>${b.name}</h3>
+        <p>${b.email}</p>
+        <p>PNR: ${b.pnr}</p>
+      </div>
+    `
+  })
+}
+
+loadBookings()
+</script>
+
+</body>
+</html>

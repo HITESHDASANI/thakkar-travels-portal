@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial; background:#f4f6f9; }
+    .box { background:white; padding:20px; margin:20px; border-radius:10px; }
+    .grid { display:flex; gap:20px; }
+    .card { flex:1; background:#007bff; color:white; padding:20px; border-radius:10px; }
+  </style>
+</head>
+
+<body>
+
+<h1>✈️ Thakkar Travels Admin</h1>
+
+<div class="grid">
+  <div class="card">Total Bookings: <span id="total"></span></div>
+  <div class="card">Revenue: ₹<span id="revenue"></span></div>
+</div>
+
+<div class="box">
+  <h2>Bookings</h2>
+  <table border="1" width="100%" id="table"></table>
+</div>
+
+<button onclick="downloadExcel()">Export Excel</button>
+
+<script src="../js/config.js"></script>
+
+<script>
+async function loadData() {
+
+  const res = await fetch(`${API}/api/bookings`)
+  const data = await res.json()
+
+  document.getElementById("total").innerText = data.length
+
+  let revenue = 0
+  let html = "<tr><th>PNR</th><th>Name</th><th>Email</th></tr>"
+
+  data.forEach(b => {
+    revenue += b.price || 0
+    html += `<tr>
+      <td>${b.pnr}</td>
+      <td>${b.name}</td>
+      <td>${b.email}</td>
+    </tr>`
+  })
+
+  document.getElementById("revenue").innerText = revenue
+  document.getElementById("table").innerHTML = html
+}
+
+function downloadExcel() {
+  window.open(`${API}/api/admin/export`)
+}
+
+loadData()
+</script>
+
+</body>
+</html>

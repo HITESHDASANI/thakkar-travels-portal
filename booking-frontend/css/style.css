@@ -1,0 +1,53 @@
+body{
+font-family:Arial;
+background:#f4f6f8;
+margin:0;
+padding:20px;
+}
+
+h1{
+text-align:center;
+}
+
+.search-box{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px #ddd;
+margin-bottom:20px;
+}
+
+.search-box input{
+padding:10px;
+margin:5px;
+}
+
+.search-box button{
+padding:10px 20px;
+background:#0077ff;
+color:white;
+border:none;
+border-radius:5px;
+}
+
+.results{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:20px;
+}
+
+.flight-card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px #ddd;
+}
+
+.flight-card button{
+margin-top:10px;
+padding:10px;
+background:green;
+color:white;
+border:none;
+border-radius:5px;
+}

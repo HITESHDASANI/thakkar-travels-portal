@@ -9,10 +9,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// ✅ Mongo connect पहले
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected ✅"))
-.catch(err => console.log("Mongo Error ❌", err))
+
 
 // Routes
 app.use("/api/flights", require("./routes/flights"))
@@ -25,8 +22,13 @@ app.get("/", (req, res) => {
 })
 
 const PORT = process.env.PORT || 3000
+// ✅ Mongo connect पहले
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("MongoDB Connected ✅"))
+  .catch(err => console.log("Mongo Error ❌", err))
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`)
 })
 require("./cron/checkin")
+

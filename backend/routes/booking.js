@@ -1,24 +1,33 @@
-const express=require("express")
-const fs=require("fs")
+const express = require("express")
+const router = express.Router()
+const Booking = require("../models/Booking")
 
-const router=express.Router()
+// CREATE BOOKING
+router.post("/", async (req, res) => {
+  try {
+    const pnr = Math.random().toString(36).substring(2, 8).toUpperCase()
 
-router.post("/create",(req,res)=>{
+    const booking = new Booking({
+      ...req.body,
+      pnr
+    })
 
-const booking=req.body
+    await booking.save()
+    res.json(booking)
 
-let data=[]
-
-if(fs.existsSync("./data/bookings.json")){
-data=JSON.parse(fs.readFileSync("./data/bookings.json"))
-}
-
-data.push(booking)
-
-fs.writeFileSync("./data/bookings.json",JSON.stringify(data,null,2))
-
-res.json({status:"booking saved"})
-
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
-module.exports=router
+// GET ALL BOOKINGS
+router.get("/", async (req, res) => {
+  try {
+    const data = await Booking.find().sort({ createdAt: -1 })
+    res.json(data)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+module.exports = router

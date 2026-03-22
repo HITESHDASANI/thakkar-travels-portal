@@ -1,31 +1,19 @@
-const express=require("express")
-const router=express.Router()
+const express = require("express")
+const router = express.Router()
+const { searchFlights } = require("../services/ease2fly")
 
-router.get("/search",(req,res)=>{
+router.get("/search", async (req, res) => {
+  try {
+    const { from, to, date } = req.query
 
-const {from,to,date}=req.body
+    const data = await searchFlights({ from, to, date })
 
-const flights=[
-{
-airline:"IndiGo",
-flight:"6E101",
-from,
-to,
-date,
-price:5200
-},
-{
-airline:"Air India",
-flight:"AI203",
-from,
-to,
-date,
-price:6100
-}
-]
+    res.json(data)
 
-res.json(flights)
-
+  } catch (err) {
+    console.log("SEARCH ERROR:", err.response?.data || err.message)
+    res.status(500).json(err.response?.data || err.message)
+  }
 })
 
-module.exports=router
+module.exports = router

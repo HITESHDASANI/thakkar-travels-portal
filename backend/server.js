@@ -1,30 +1,32 @@
+require("dotenv").config()   // सबसे ऊपर
+
 const express = require("express")
 const cors = require("cors")
-
-// Route files
-const flights = require("./routes/flights")
-const booking = require("./routes/booking")
-const payment = require("./routes/payment")
+const mongoose = require("mongoose")
 
 const app = express()
 
-// Middlewares
 app.use(cors())
 app.use(express.json())
 
-// API Routes
-app.use("/api/flights", flights)
-app.use("/api/bookings", booking)
-app.use("/api/payment", payment)
+// ✅ Mongo connect पहले
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("MongoDB Connected ✅"))
+.catch(err => console.log("Mongo Error ❌", err))
 
-// Test Route
+// Routes
+app.use("/api/flights", require("./routes/flights"))
+app.use("/api/bookings", require("./routes/booking"))
+app.use("/api/payment", require("./routes/payment"))
+app.use("/api/admin", require("./routes/admin"))
+
 app.get("/", (req, res) => {
-  res.send("Thakkar Travels API Running Successfully")
+  res.send("Thakkar Travels API Running ✈️")
 })
 
-// Server Port
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-  console.log("Server running on port", PORT)
+  console.log(`Server running on ${PORT}`)
 })
+require("./cron/checkin")

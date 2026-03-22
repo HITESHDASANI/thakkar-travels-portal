@@ -1,12 +1,20 @@
 {
-"name":"thakkar-backend",
-"version":"1.0.0",
-"main":"server.js",
-"scripts":{
-"start":"node server.js"
-},
-"dependencies":{
-"cors":"^2.8.5",
-"express":"^4.18.2"
-}
+  "name": "thakkar-travel-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.18.2",
+    "mongoose": "^9.3.1",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^8.0.3",
+    "pdfkit": "^0.18.0",
+    "razorpay": "^2.9.6"
+  }
 }
